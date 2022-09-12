@@ -3,6 +3,7 @@ package fr.exagone.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -36,6 +37,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // desactivation csrf - active par défaut.
         http.csrf().disable();
         // toutes les ressources necessitent une authentification
+
+        // autre condition pour les mehtodes POST
+        http.authorizeRequests().antMatchers(HttpMethod.POST).hasRole("ADMIN");
+            // .and().authorizeRequests().antMatchers(HttpMethod.POST).hasAuthority("ADMIN");
+        // http.authorizeRequests().antMatchers(HttpMethod.POST).hasAuthority("ADMIN");
+            // .hasAuthority("ADMIN");
+        // http.authorizeRequests().antMatchers("/save**/**","/delete**/**").hasRole("ADMIN");
+        // toutes les requetes http necessite de passer par authentification
         http.authorizeRequests().anyRequest().authenticated();
     }
 
